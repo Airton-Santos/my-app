@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { Button, TextInput } from 'react-native-paper';
+import { IconButton ,Button, TextInput } from 'react-native-paper';
+import { Link } from 'expo-router';
 
 export default function App() {
   const [descricao, setdescricao] = useState('');
@@ -99,6 +100,14 @@ export default function App() {
         >
           Registrar
         </Button>
+
+          <Link href='/' asChild><IconButton
+            style={styles.butoniconhome}
+            icon="home"
+            size={40}
+          />
+          </Link>
+        
       </View>
     </View>
   );
@@ -113,6 +122,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#f0f0f0',
   },
   card: {
+    flex: 0.5,
+    justifyContent: 'center',
     backgroundColor: '#0f0f0f',
     width: 350,
     height: 400,
@@ -171,5 +182,12 @@ const styles = StyleSheet.create({
   buttonRegistrar: {
     margin: 10,
     borderRadius: 0,  
+  },
+  butoniconhome: {
+    marginLeft:128,
+    borderWidth: 1,
+    alignItems: 'center',
+    margin: 10,
+    borderRadius: 0
   },
 });
