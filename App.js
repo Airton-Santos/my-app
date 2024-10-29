@@ -1,72 +1,64 @@
 import { useState } from 'react';
-import { StyleSheet, Text, View, Image, } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { Button, TextInput } from 'react-native-paper';
 
 export default function App() {
-  const [textEmail, setEmailText] = useState('')
-  const [Senha, senhaText] = useState('')
-  const [nome, nomeText] =  useState('')
+  const [descricao, setdescricao] = useState('');
+  const [valor, setvalor] = useState('');
+  const [cadastrando, setCadastrando] = useState(false);
 
-  const [securePassword, setSecurePassword] = useState(true); // Estado para controlar visibilidade da senha
+  const handlerCadastra = async () => {
+    setCadastrando(true);
 
-  const togglePasswordVisibility = () => {
-    setSecurePassword(!securePassword); // Alterna entre ocultar e mostrar a senha
+    await fetch('https://66fc26cec3a184a84d1642a4.mockapi.io/Lanches', {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        valor: valor,
+        descricao: descricao,
+      }),
+    });
+
+    setCadastrando(false);
   };
 
   return (
     <View style={styles.container}>
-        <View style={styles.card}>
-
-        <Text style={styles.texto}>Cadastro:</Text>
-
+      <View style={styles.card}>
         <TextInput
-          style={styles.nomeInput}
-          autoCapitalize='words'
-          label="Nome"
-          value={nome}
-          onChangeText={nomeText}        
+          style={styles.descInput}
+          label='Descrição'
+          value={descricao}
+          onChangeText={setdescricao}
         />
-
         <TextInput
-          style={styles.emailInput}
-          autoCapitalize='none'
-          keyboardType='email-address'
-          label="Email"
-          value={textEmail}
-          onChangeText={setEmailText}        
+          style={styles.valorInput}
+          label='Valor'
+          value={valor}
+          onChangeText={setvalor}
         />
-
-        <TextInput
-          style={styles.senhaInput}
-          autoCapitalize="none"
-          secureTextEntry={securePassword}  // Usa o estado para definir visibilidade
-          right={
-            <TextInput.Icon
-              style={styles.iconEye}
-              icon={securePassword ? "eye-off" : "eye"}  // Muda o ícone entre "eye" e "eye-off"
-              color="#808080"
-              onPress={togglePasswordVisibility} // Altera o estado ao pressionar o ícone
-            />
-          }
-          label="Senha"
-          value={Senha}
-          onChangeText={senhaText}        
-        />
-
-        <Button style={styles.buttonRegistrar} buttonColor='#bf2424'>
-            Registrar
+        <Button 
+          style={styles.buttonRegistrar}
+          buttonColor='#bf2424'
+          mode='contained'
+          onPress={handlerCadastra}
+          loading={cadastrando}
+        >
+          Registrar
         </Button>
-        </View>
-
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,  // Faz o contêiner ocupar toda a altura e largura disponível
-    justifyContent: 'center',  // Centraliza o conteúdo verticalmente
-    alignItems: 'center',  // Centraliza o conteúdo horizontalmente
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
     padding: 16,
     backgroundColor: '#f0f0f0',
   },
@@ -79,47 +71,24 @@ const styles = StyleSheet.create({
     shadowColor: '#0f0f0f',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
-    shadowRadius: 3
+    shadowRadius: 3,
   },
-
-  texto: {
-    color: '#fff',
-    fontSize: 30,
-    marginBottom: 20,
-    fontWeight: 'bold',
-  },
-
-  emailInput: {
+  descInput: {
     padding: 5,
     margin: 5,
     borderColor: '#bf2424',
     borderRadius: 10,
-    borderWidth: 5
+    borderWidth: 5,
   },
-  nomeInput: {
+  valorInput: {
     padding: 5,
     margin: 5,
     borderColor: '#bf2424',
     borderRadius: 10,
-    borderWidth: 5
+    borderWidth: 5,
   },
-
-  senhaInput: {
-    padding: 5,
-    margin: 5,
-    borderColor: '#bf2424',
-    borderRadius: 10,
-    borderWidth: 5
-  },
-
-  iconEye: {
-    marginRight: 10, // Adiciona um espaço entre o ícone e o input
-    marginTop: 15,
-  },
-
   buttonRegistrar: {
     margin: 10,
-    borderRadius: 0,  
+    borderRadius: 0,
   },
-
 });
