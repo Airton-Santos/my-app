@@ -1,11 +1,24 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native'
 import { Link, router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { Button, List } from 'react-native-paper'
+import { Button, IconButton, List } from 'react-native-paper'
 
-const Comida = ({descricao, valor}) => {
+const Comida = ({descricao, valor, id}) => {
+
+  const handleExcluir = async (id) => {
+    console.log(id);
+
+    await fetch(`https://66fc26cec3a184a84d1642a4.mockapi.io/Lanches/${id}`, {
+      method: 'DELETE',
+    });
+  }
+
   return (
-    <List.Item title = {descricao} description = {valor}/>
+   <List.Item 
+      title = {descricao}
+      description = {valor} 
+      right={() => <IconButton icon={"trash-can-outline"} onPress={() => handleExcluir(id)}/>}
+  />
   );
 };
 
@@ -27,11 +40,10 @@ const Index = () => {
 
   return (
     <View>
-      <FlatList data = {comidas} renderItem = {({ item }) => <Comida descricao={item.descricao} valor={item.valor} />} />
-
       <Link href='/cadastro' asChild>
         <Button mode='contained'>Novo Lanche</Button>
       </Link>
+      <FlatList data = {comidas} renderItem = {({ item }) => <Comida id={item.id} descricao={item.descricao} valor={item.valor} />} />
     </View>
   )
 }
