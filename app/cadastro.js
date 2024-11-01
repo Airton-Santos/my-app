@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { Route  } from 'expo-router/build/Route';
 import { StyleSheet, Text, View } from 'react-native';
 import { IconButton ,Button, TextInput } from 'react-native-paper';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 
 export default function App() {
   const [descricao, setdescricao] = useState('');
@@ -24,6 +25,8 @@ export default function App() {
     });
 
     setCadastrando(false);
+
+    router.replace('/');
   };
 
   {/* Comentários removidos, mas se precisar, você pode reativá-los conforme necessário
